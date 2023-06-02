@@ -11,10 +11,12 @@ const store = useCounterStore();
    <h3>Email de contacto: cuidapp@consultas.com.ar</h3>
     
   </div>
+  <div class="container">
   <RouterLink to="/Inicio"
     ><button class="btn btn-outline-secondary" type="button">
       Volver atras
     </button></RouterLink>
+  </div>
 </template>
 
 <style scoped>
@@ -35,10 +37,10 @@ h1 {
   border-radius: 5px;
 }
 
-/*.grid-container{
+.grid-container{
   display: grid;
   
-}*/
+}
 
 button {
   margin: 15px;

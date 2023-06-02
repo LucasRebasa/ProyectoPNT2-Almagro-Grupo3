@@ -8,8 +8,15 @@ const { nombre,mail } = storeToRefs(store)
 
 <template>
   <div class="container">
-   <h3>Nombre: {{nombre}}</h3>
-   <h3>Mail:{{mail}}</h3>
+   <br>
+   <div class="card" style="width: 18rem;">
+   <div class="card-body">
+    <h5 class="card-title">Tus datos personales</h5>
+    <p class="card-text">{{nombre}}</p>
+    <p class="card-text">{{mail}}</p>
+    <a href="#" class="btn btn-primary">Editar</a>
+  </div>
+</div>
    <RouterLink to="/Inicio"><button class="btn btn-outline-secondary" type="button">Volver</button></RouterLink>
   </div>
 </template>

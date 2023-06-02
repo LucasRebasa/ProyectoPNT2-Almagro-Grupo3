@@ -1,8 +1,11 @@
 <script setup>
 import { useCounterStore } from "../stores/counter.js";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 const store = useCounterStore();
-const { nombre, mail } = storeToRefs(store);
+const { nuevoTurno } = store;
+const fecha = ref("");
+const especialidad = ref("");
 
 function mostrarAlerta(mensaje) {
   alert(mensaje);
@@ -30,28 +33,38 @@ function mostrarAlerta(mensaje) {
 
     <div class="input-group">
       <span class="input-group-text">Selecciona una fecha</span>
-      <input type="datetime-local" class="form-control" placeholder="Fecha" />
+      <input
+        type="datetime-local"
+        class="form-control"
+        placeholder="Fecha"
+        v-model="fecha"
+      />
     </div>
 
     <div class="input-group">
-   
-        <select  class="form-select" aria-label="Default select example">
-          <option disabled selected hidden >Selecciona la especialidad</option>
-          <option>Traumatologia</option>
-          <option>Otorrino</option>
-          <option>Dermatologia</option>
-        </select>
-      </div>
-      <div class="input-group">
-        <span class="input-group-text">Email</span>
-        <input type="mail" class="form-control" v-bind:placeholder="mail" />
-      </div>
-    </form>
-    <div class="botones">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        v-model="especialidad"
+      >
+        <option disabled selected hidden>Selecciona la especialidad</option>
+        <option>Traumatologia</option>
+        <option>Otorrino</option>
+        <option>Dermatologia</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <span class="input-group-text">Email</span>
+      <input type="mail" class="form-control" v-bind:value="mail" />
+    </div>
+  </form>
+  <div class="botones">
     <button
       class="btn btn-outline-secondary"
       type="button"
-      @click="mostrarAlerta('Turno confirmado')"
+      @click="
+        nuevoTurno(fecha.split('T')[0], fecha.split('T')[1], especialidad)
+      ; mostrarAlerta('Turno confirmado');"
     >
       Confirmar turno
     </button>
@@ -61,8 +74,7 @@ function mostrarAlerta(mensaje) {
         Volver al inicio
       </button>
     </RouterLink>
-
-  </div> 
+  </div>
 </template>
 
 <style scoped>
@@ -78,7 +90,7 @@ div {
   flex-direction: column;
 }
 
-.botones{
+.botones {
   display: flex;
   justify-content: center;
   margin-top: 5%;

@@ -11,7 +11,7 @@ const { nombre } = storeToRefs(store)
     <h2>Bienvenido {{ nombre }}</h2>
     <div class="menu">
       <RouterLink to="/AltaNuevoTurno"><button class="btn btn-outline-secondary" type="button">Nuevo turno <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png" id="imgButton" alt=""></button></RouterLink>
-      <RouterLink to="/"><button class="btn btn-outline-secondary" type="button">Ver mis turnos <img src="https://cdn2.iconfinder.com/data/icons/party-new-years/128/Party_Newyears_Watch-128.png" id="imgButton" alt=""></button></RouterLink>
+      <RouterLink to="/GestionTurnos"><button class="btn btn-outline-secondary" type="button">Ver mis turnos <img src="https://cdn2.iconfinder.com/data/icons/party-new-years/128/Party_Newyears_Watch-128.png" id="imgButton" alt=""></button></RouterLink>
       <RouterLink to="/DatosPersonales"><button class="btn btn-outline-secondary" type="button">Ver mis datos <img src="https://cdn4.iconfinder.com/data/icons/man-user-human-person-avatar-business-profile/100/18A-1User-128.png" id="imgButton" alt=""></button></RouterLink>
       <RouterLink to="/Contactese"><button class="btn btn-outline-secondary" type="button">Contáctese <img src="https://cdn1.iconfinder.com/data/icons/contact-us-flat-1/58/028_-_Contact_Info-512.png" id="imgButton" alt=""></button>
       </RouterLink>
@@ -62,10 +62,3 @@ button {
 
 
 </style>
-/*
-.grid-container{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-}
-*/

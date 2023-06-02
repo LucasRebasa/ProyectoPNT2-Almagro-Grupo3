@@ -23,12 +23,12 @@
         </div>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Ingrese una contraseña">
+            <input type="password" class="form-control" placeholder="Ingrese una contraseña">
             <span class="input-group-text">Contraseña</span>
         </div>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Ingrese una contraseña">
+            <input type="text" class="form-control">
             <span class="input-group-text">Confirmar contraseña</span>
         </div>
 

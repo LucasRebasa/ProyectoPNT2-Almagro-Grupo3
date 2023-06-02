@@ -3,10 +3,8 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <template>
-  <div class="Jumbotron" >
-    
+  <div>
     <div>
-     
      <img src="https://i.ibb.co/WgjPgWD/85382643e7144e2e88018c8faa930790-2.png" alt="85382643e7144e2e88018c8faa930790-2"><br />
      <h1>Hola !</h1>
      <h4>iniciá sesión o <a>crea una cuenta</a></h4>

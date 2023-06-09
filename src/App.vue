@@ -2,6 +2,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Menu from "./components/Menu.vue"
+import Footer from "./components/Footer.vue"
 
 
 </script>
@@ -9,6 +10,7 @@ import Menu from "./components/Menu.vue"
 <template>
    <Menu/>
    <RouterView />
+   <Footer/>
 </template>
 
 <style scoped>

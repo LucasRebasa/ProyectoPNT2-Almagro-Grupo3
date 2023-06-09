@@ -6,9 +6,10 @@ import { RouterLink } from 'vue-router';
   <div>
     <div>
      <img src="https://i.ibb.co/WgjPgWD/85382643e7144e2e88018c8faa930790-2.png" alt="85382643e7144e2e88018c8faa930790-2"><br />
-     <h1>Hola !</h1>
-     <h4>iniciá sesión o <a>crea una cuenta</a></h4>
-     <RouterLink to="/login"><button class="btn btn-outline-secondary" type="button">Log-in</button></RouterLink>
+     <h1>¡ Hola !</h1>
+     <h4>Iniciá sesión o <a>Crea una cuenta</a></h4>
+     <RouterLink to="/LoginUsuario"><button class="btn btn-outline-secondary" type="button">Usuario</button></RouterLink>
+     <RouterLink to="/LoginMedico"><button class="btn btn-outline-secondary" type="button">Medico</button></RouterLink>
      <RouterLink to="/Registrar"><button class="btn btn-outline-secondary" type="button">Registrarse</button></RouterLink>
      
 

@@ -12,7 +12,7 @@ const mail = ref("");
 
 <template>
 
-<footer id="mainfooter">
+<footer id="mainfooter fixed-bottom">
 
    <div class="box__footer">
         <h2>Redes Sociales</h2>
@@ -23,7 +23,7 @@ const mail = ref("");
     </div>  
     <div class="box__copyright">
         <hr>
-        <p>Todos los derechos reservados © 2022 <b>CuidApp </b></p>
+        <p>Todos los derechos reservados © 2023 <b>CuidApp </b></p>
     </div> 
 </footer>
     

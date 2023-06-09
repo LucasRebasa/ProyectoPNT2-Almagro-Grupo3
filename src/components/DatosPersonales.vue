@@ -7,17 +7,23 @@ const { nombre,mail } = storeToRefs(store)
 </script>
 
 <template>
+  
   <div class="container">
+    <h5 class="card-title">Estos son tus datos personales</h5>
    <br>
    <div class="card" style="width: 18rem;">
-   <div class="card-body">
-    <h5 class="card-title">Tus datos personales</h5>
-    <p class="card-text">{{nombre}}</p>
-    <p class="card-text">{{mail}}</p>
+   
+  <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="../img/messi.jpg" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <p class="card-text">Nombre: {{nombre}}</p>
+    <p class="card-text">Email: {{mail}}</p>
     <a href="#" class="btn btn-primary">Editar</a>
   </div>
 </div>
-   <RouterLink to="/Inicio"><button class="btn btn-outline-secondary" type="button">Volver</button></RouterLink>
+</div>
+   <RouterLink to="/InicioUsuario"><button class="btn btn-outline-secondary" type="button">Volver</button></RouterLink>
   </div>
 </template>
 

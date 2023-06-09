@@ -2,21 +2,36 @@
 import { useCounterStore } from "../stores/counter.js";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
+import router from "../router/index"
 
 const store = useCounterStore();
-const { login } = store;
-const nombre = ref("");
+const { loginUsuario } = store;
 const mail = ref("");
+const password = ref("");
+
+
+function validarLogin(mail, password){
+  if(mail && password){
+    if(loginUsuario(mail, password)){
+      router.push({path:"/InicioUsuario"});
+      return;
+    }
+    window.alert("Usuario no registrado")
+  }
+}
 </script>
 
 <template>
   <div class="container">
+    <form action="" v-on:submit.prevent>
+
     <div class="input-group">
       <input
         type="text"
         class="form-control"
         placeholder="Tu mail"
         v-model="mail"
+        required
       />
       <span class="input-group-text">@example.com</span>
     </div>
@@ -27,25 +42,26 @@ const mail = ref("");
         type="password"
         class="form-control"
         placeholder="Ingresa aqui tu contraseña"
-        v-model="nombre"
+        v-model="password"
+        required
       />
     </div>
 
-    <RouterLink to="/Inicio"
-      ><button
-        @click="login(nombre, mail)"
-        type="button"
+   <button
+        @click="validarLogin(mail, password)"
+        type="submit"
         class="btn btn-outline-secondary"
       >
         Ingresar
-      </button></RouterLink
-    >
+    </button>
+    
 
     <RouterLink to="/"
       ><button type="button" class="btn btn-danger" id="btnVolver">
         Volver al inicio
       </button></RouterLink
     >
+  </form>
   </div>
 </template>
 <style scoped>

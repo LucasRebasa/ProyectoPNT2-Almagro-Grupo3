@@ -4,6 +4,7 @@ import { useCounterStore } from "../stores/counter.js";
 import { storeToRefs } from "pinia";
 const store = useCounterStore();
 const { turnos } = storeToRefs(store);
+const {eliminarTurno} = store;
 </script>
 
 <template>
@@ -17,14 +18,14 @@ const { turnos } = storeToRefs(store);
     <h5 class="card-title">{{turno.especialidadTurno }}</h5>
     <p class="card-text">{{turno.fechaTurno}}</p>
     <p class="card-text">{{turno.horaTurno}}</p>
-    <a href="#" class="btn btn-primary">Eliminar turno</a>
+    <a href="#" class="btn btn-primary" @click="eliminarTurno(turno)">Eliminar turno</a>
   </div>
   <div class="card-footer text-muted">
-    Cuidapp®
+    <p>Todos los derechos reservados © 2023 <b>CuidApp </b></p>
   </div>
 </div>
 <div class="botones">
-<RouterLink to="/Inicio"
+<RouterLink to="/InicioUsuario"
       ><button class="btn btn-outline-secondary" type="button">
         Volver
       </button>

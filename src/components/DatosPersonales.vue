@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router';
 import { useCounterStore } from "../stores/counter.js"
 import { storeToRefs } from "pinia";
 const store = useCounterStore();
-const { nombre,mail } = storeToRefs(store)
+const { nombre,email,dni,apellido } = storeToRefs(store)
 </script>
 
 <template>
@@ -18,7 +18,9 @@ const { nombre,mail } = storeToRefs(store)
   <div class="card-body">
     <h5 class="card-title"></h5>
     <p class="card-text">Nombre: {{nombre}}</p>
-    <p class="card-text">Email: {{mail}}</p>
+    <p class="card-text">Apellido: {{apellido}}</p>
+    <p class="card-text">DNI: {{dni}}</p>
+    <p class="card-text">Email: {{email}}</p>
     <a href="#" class="btn btn-primary">Editar</a>
   </div>
 </div>

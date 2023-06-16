@@ -1,13 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { useCounterStore } from "../stores/counter.js";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/', 
       name: 'home',
-      component: HomeView
+      component:() => import('../views/HomeView.vue')
     },
     {
       path: '/LoginUsuario',
@@ -28,10 +29,24 @@ const router = createRouter({
     {
       path: '/InicioUsuario',
       name: 'InicioUsuario',
+      meta: {
+        requiereDoctor: false
+      },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/InicioUsuarioView.vue')
+    },
+    {
+      path: '/InicioMedico',
+      name: 'InicioMedico',
+      meta: {
+        requiereDoctor: true
+      },
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import ('../views/InicioMedicoView.vue')
     },
     {
       path: '/DatosPersonales',
@@ -73,8 +88,21 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/LoginMedicoView.vue')
     },
-  
   ]
+
 })
 
-export default router
+router.beforeEach((to, from, next) => {
+  const store = useCounterStore();
+
+  const tipoUsuario = store.tipoUsuario;
+  if(to.name==="InicioUsuario" && tipoUsuario === "MEDICO"){
+    next({name:"InicioMedico"});
+  }else if(to.name==="InicioMedico" && tipoUsuario === "USUARIO"){
+    next({name:"InicioUsuario"});
+  }else{
+    next();
+  }
+})
+
+export default router;

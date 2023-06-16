@@ -1,18 +1,36 @@
 <script setup>
+import flatpickr from 'flatpickr';
 import { useCounterStore } from "../stores/counter.js";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, onMounted} from "vue";
 import router from "../router/index"
 const store = useCounterStore();
 const { nuevoTurno, nombre, apellido, dni } = store;
 const fecha = ref("");
 const horario = ref("");
 const especialidad = ref("");
-const mail = ref("");
+const email = ref("");
 const medico = ref("");
 
-function validarTurno(fecha, especialidad, mail) {
-  if(fecha != null && mail != null && especialidad != null){
+onMounted(() => {
+    let maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 7)
+      flatpickr(("#fecha"), {
+        disable: [
+          function(date) {
+            return date.getDay() === 6 || date.getDay() === 0;
+          }
+        ],
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "F j, Y",
+        minDate: Date.now(),
+        maxDate: maxDate
+      });
+    })
+
+function validarTurno(fecha, especialidad, email) {
+  if(fecha != null && email != null && especialidad != null){
     nuevoTurno(fecha.split('T')[0], fecha.split('T')[1], especialidad)
     window.alert("Turno creado correctamente")
     router.push({ path: '/InicioUsuario' });
@@ -73,36 +91,44 @@ function validarTurno(fecha, especialidad, mail) {
     <div class="input-group" v-show="medico">
       <span class="input-group-text" >Selecciona una fecha</span>
       <input
-        type="datetime-local"
+        id="fecha"
+        type="text"
         class="form-control"
         placeholder="Fecha"
         v-model="fecha"
         required
+        @change="generarHorarios()"
       />
     </div>
 
     <div class="input-group" v-show="fecha">
       <span class="input-group-text" >Selecciona un horario</span>
-      <input
-        type="datetime-local"
-        class="form-control"
-        placeholder="Fecha"
+      <select
+        class="form-select"
+        aria-label="Default select example"
         v-model="horario"
         required
-      />
+      > <option>10:00</option>
+        <option>11:00</option>
+        <option>12:00</option>
+        <option>13:00</option>
+        <option>14:00</option>
+        <option>15:00</option>
+        <option>16:00</option>
+    </select>
     </div>
 
     
-    <div class="input-group" v-show="fecha">
+    <div class="input-group" v-show="horario">
       <span class="input-group-text">Email</span>
-      <input type="mail" class="form-control" v-bind:value="mail" required/>
+      <input type="mail" class="form-control" v-bind:value="email" required/>
     </div>
     <div class="botones">
     <button
       class="btn btn-outline-secondary"
       type="submit"
       @click="
-        validarTurno(fecha,especialidad,mail)"
+        validarTurno(fecha,especialidad,email)"
     >
       Confirmar turno
     </button>

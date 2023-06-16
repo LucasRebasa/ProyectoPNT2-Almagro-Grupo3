@@ -6,7 +6,7 @@ import { ref } from "vue";
 const store = useCounterStore();
 const { login } = store;
 const nombre = ref("");
-const mail = ref("");
+const email = ref("");
 
 </script>
 

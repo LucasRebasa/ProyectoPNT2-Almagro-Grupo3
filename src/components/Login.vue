@@ -6,13 +6,13 @@ import router from "../router/index"
 
 const store = useCounterStore();
 const { loginUsuario } = store;
-const mail = ref("");
+const email = ref("");
 const password = ref("");
 
 
-function validarLogin(mail, password){
-  if(mail && password){
-    if(loginUsuario(mail, password)){
+function validarLogin(email, password){
+  if(email && password){
+    if(loginUsuario(email, password)){
       router.push({path:"/InicioUsuario"});
       return;
     }
@@ -29,8 +29,8 @@ function validarLogin(mail, password){
       <input
         type="text"
         class="form-control"
-        placeholder="Tu mail"
-        v-model="mail"
+        placeholder="Tu email"
+        v-model="email"
         required
       />
       <span class="input-group-text">@example.com</span>
@@ -48,7 +48,7 @@ function validarLogin(mail, password){
     </div>
 
    <button
-        @click="validarLogin(mail, password)"
+        @click="validarLogin(email, password)"
         type="submit"
         class="btn btn-outline-secondary"
       >

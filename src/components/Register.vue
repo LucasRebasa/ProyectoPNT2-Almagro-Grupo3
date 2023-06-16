@@ -9,18 +9,27 @@ const nombre = ref("");
 const apellido = ref("");
 const dni = ref("");
 const password = ref("")
-const mail = ref("")
+const email = ref("")
 const tipo = ref("");
+const matricula = ref("");
 const { registerUsuario, registerMedico } = store;
 
-function validarRegister(nombre, apellido, dni, mail, password, tipo) {
+async function validarRegister(nombre, apellido, dni, email, password, tipo, router) {
     if (nombre && apellido && dni && password) {
         if (tipo === "Usuario") {
-            registerUsuario(nombre, apellido, dni, mail, password)
-            router.push({ path: "/" })
+            try{
+                await registerUsuario(nombre, apellido, dni, email, password);
+                router.push({ path: "/" });
+            }catch(e){
+                window.alert(e);
+            }
         } else {
-            registerMedico(nombre, apellido, dni, mail, password, matricula)
-            router.push({ path: "/" })
+            try{
+                await registerMedico(nombre, apellido, dni, email, password, matricula)
+                router.push({ path: "/" });
+            }catch(e){
+                window.alert(e);
+            }
         }
     }
 }
@@ -42,7 +51,7 @@ function validarRegister(nombre, apellido, dni, mail, password, tipo) {
         </div>
         <div class="input-group">
             <span class="input-group-text">Email</span>
-            <input type="mail" class="form-control" placeholder="Ingrese su email" v-model="mail" required>
+            <input type="mail" class="form-control" placeholder="Ingrese su email" v-model="email" required>
         </div>
 
         <div class="input-group">
@@ -65,12 +74,12 @@ function validarRegister(nombre, apellido, dni, mail, password, tipo) {
         </div>
         <div class="input-group" v-show="tipo === 'Medico'">
             <span class="input-group-text">Ingrese su matricula</span>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control" v-model="matricula" required>
         </div>
 
         <div class="router">
             <button type="submit" class="btn btn-outline-secondary"
-                @click="validarRegister(nombre, apellido, dni, mail, password, tipo)"> Registrar</button>
+                @click="validarRegister(nombre, apellido, dni, email, password, tipo, router)"> Registrar</button>
             <RouterLink to="/"><button class="btn btn-outline-secondary" type="button">Volver al inicio</button>
             </RouterLink>
         </div>

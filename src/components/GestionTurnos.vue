@@ -25,7 +25,7 @@ const {eliminarTurno} = store;
   </div>
 </div>
 <div class="botones">
-<RouterLink to="/InicioUsuario"
+<RouterLink to="/InicioMedico"
       ><button class="btn btn-outline-secondary" type="button">
         Volver
       </button>

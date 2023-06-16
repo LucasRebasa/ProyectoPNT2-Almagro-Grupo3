@@ -2,9 +2,9 @@
 <script setup>
 import { useCounterStore } from "../stores/counter.js"
 import { storeToRefs } from "pinia";
+import Footer from '../components/Footer.vue'
 const store = useCounterStore();
 const { nombre } = storeToRefs(store)
-import Footer from '../components/Footer.vue'
 </script>
 
 <template>

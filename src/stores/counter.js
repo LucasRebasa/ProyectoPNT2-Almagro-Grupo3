@@ -1,72 +1,98 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { ref, computed } from "vue";
+import { defineStore } from "pinia";
+import medicoService  from "../services/medicoService";
+import usuariosService  from "../services/usuariosService";
 
-export const useCounterStore = defineStore('counter', {
-  state: () => ({nombre: "", apellido: "", mail:"",password:"", matricula:"",dni:"",turnos:[], usuarios:[],medicos:[]}),
+export const useCounterStore = defineStore("counter", {
+  state: () => ({
+    id:"",
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+    matricula: "",
+    dni: "",
+    tipoUsuario:"",
+    turnos: [],
+  }),
+  persist: true,
   actions: {
-    registerUsuario(nombre, apellido, dni, mail, password, ){
-      this.nombre = nombre;
-      this.apellido = apellido;
-      this.mail = mail;
-      this.password = password;
-      this.dni = dni;
+    async registerUsuario(nombre, apellido, dni, email, password) {
       const obj = {
         nombre,
         apellido,
         dni,
-        mail,
-        password
-      }
-      this.usuarios.push(obj);
-    },
-    registerMedico(nombre, apellido, dni, mail, password, matricula){
-      this.nombre = nombre;
-      this.apellido = apellido;
-      this.mail = mail;
-      this.password = password;
-      this.matricula = matricula;
-      const obj = {
-        nombre,
-        apellido,
-        dni,
-        mail,
+        email,
         password,
-        matricula
+      };
+      try{
+        await usuariosService.create(obj);
+      }catch(e){
+        throw e;
       }
-      this.medicos.push(obj);
     },
-    loginUsuario(mail,password){
-      let usuario = this.usuarios.find(u => u.mail == mail && u.password == password)
-      if(!usuario){
+    async registerMedico(nombre, apellido, dni, email, password, matricula) {
+      const obj = {
+        nombre,
+        apellido,
+        dni,
+        email,
+        password,
+        matricula,
+      };
+      try{
+        await medicoService.create(obj);
+      }catch(e){
+        throw e;
+      }
+    },
+    async loginUsuario(email, password) {
+      if (!email || !password) {
         return false;
       }
-      this.mail = usuario.mail;
-      this.password = usuario.password;
-      return true;
-    },
-    loginMedico(mail,password,matricula){
-      let medico = this.medicos.find(m => m.mail == mail && m.password == password && m.matricula == matricula)
-      if(!medico){
+      try {
+        let { data } = await usuariosService.login({email, password});
+        this.nombre = data.nombre;
+        this.apellido = data.apellido;
+        this.email = data.email;
+        this.dni = data.dni;
+        this.tipoUsuario = "USUARIO";
+        return true;
+      } catch (e) {
         return false;
       }
-      this.mail = usuario.mail;
-      this.password = usuario.password;
-      this.matricula = matricula;
-      return true;
     },
-    nuevoTurno(fecha,hora,especialidad){
-        const nuevoTurno = {
-        fechaTurno : fecha,
+    async loginMedico(email, password) {
+      if (!email || !password) {
+        return false;
+      }
+      try {
+        let { data } = await medicoService.login({email, password});
+        this.nombre = data.nombre;
+        this.apellido = data.apellido;
+        this.email = data.email;
+        this.dni = data.dni;
+        this.tipoUsuario = "MEDICO";
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+    nuevoTurno(fecha, hora, especialidad) {
+      const nuevoTurno = {
+        fechaTurno: fecha,
         horaTurno: hora,
-        especialidadTurno: especialidad
-        }
-      this.turnos.push(nuevoTurno)
+        especialidadTurno: especialidad,
+      };
+      this.turnos.push(nuevoTurno);
     },
-    eliminarTurno(turno){
-      this.turnos = this.turnos.filter(t =>{
-        return t.fechaTurno !== turno.fechaTurno && t.horaTurno !== turno.horaTurno;
-      })
-    
-  }
-  }
-})
+    eliminarTurno(turno) {
+      this.turnos = this.turnos.filter((t) => {
+        //T de tini, tini,tini
+        return (
+          t.fechaTurno !== turno.fechaTurno && t.horaTurno !== turno.horaTurno
+        );
+      });
+    },
+  },
+});

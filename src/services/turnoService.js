@@ -13,6 +13,7 @@ export default {
         return client.get(`/turno/medico/${idMedico}`);
     },
     findByPaciente(idPaciente){
+        console.log(idPaciente);
         return client.get(`/turno/paciente/${idPaciente}`);
     },
     create(turno){
@@ -24,7 +25,8 @@ export default {
     update(id,turno){
         return client.put(`/turno/${id}`, turno);
     },
-    buscarDisponibilidad(idMedico,fecha){
-        return client.get(`/turno/${idMedico}?=${fecha}`)
+    verDisponibilidadHoraria(idMedico,fecha){
+        console.log(idMedico)
+        return client.get(`/turno/disponibilidad?medico=${idMedico}&fecha=${fecha}`)
     }
 };

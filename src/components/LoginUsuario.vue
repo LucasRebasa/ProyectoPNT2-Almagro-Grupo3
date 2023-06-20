@@ -3,17 +3,25 @@ import { useCounterStore } from "../stores/counter.js";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import router from "../router/index"
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
+
 
 const store = useCounterStore();
 const { loginUsuario } = store;
 const email = ref("");
 const password = ref("");
+const isLoading = ref(false);
+
 
 async function validarLogin(email, password){
+  isLoading.value = true;
   if(email && password){
     if(await loginUsuario(email, password)){
       router.push({path:"/InicioUsuario"});
+      isLoading.value = false;
     }else{
+      isLoading.value = false;
       window.alert("Usuario no registrado")
     }
   }
@@ -21,6 +29,12 @@ async function validarLogin(email, password){
 </script>
 
 <template>
+  <div>
+    <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page="fullPage"/>
+  </div>
+  
   <div class="container">
     <form action="" v-on:submit.prevent>
 

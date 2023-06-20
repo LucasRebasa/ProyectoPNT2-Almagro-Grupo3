@@ -1,19 +1,23 @@
-import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import medicoService  from "../services/medicoService";
-import usuariosService  from "../services/usuariosService";
+import medicoService from "../services/medicoService";
+import usuariosService from "../services/usuariosService";
+import turnoService from "../services/turnoService";
 
 export const useCounterStore = defineStore("counter", {
   state: () => ({
-    id:"",
+    idUsuario: "",
+    idMedico: "",
     nombre: "",
+    nombreMedico:"",
     apellido: "",
     email: "",
     password: "",
     matricula: "",
     dni: "",
-    tipoUsuario:"",
+    tipoUsuario: "",
     turnos: [],
+    medicos: [],
+    especialidad: "",
   }),
   persist: true,
   actions: {
@@ -25,13 +29,14 @@ export const useCounterStore = defineStore("counter", {
         email,
         password,
       };
-      try{
+      try {
         await usuariosService.create(obj);
-      }catch(e){
+      } catch (e) {
         throw e;
       }
     },
-    async registerMedico(nombre, apellido, dni, email, password, matricula) {
+    async registerMedico(nombre, apellido, dni, email, password, matricula, especialidad) {
+      console.log(password)
       const obj = {
         nombre,
         apellido,
@@ -39,10 +44,11 @@ export const useCounterStore = defineStore("counter", {
         email,
         password,
         matricula,
+        especialidad
       };
-      try{
+      try {
         await medicoService.create(obj);
-      }catch(e){
+      } catch (e) {
         throw e;
       }
     },
@@ -51,12 +57,15 @@ export const useCounterStore = defineStore("counter", {
         return false;
       }
       try {
-        let { data } = await usuariosService.login({email, password});
+        let { data } = await usuariosService.login({ email, password });
         this.nombre = data.nombre;
         this.apellido = data.apellido;
         this.email = data.email;
         this.dni = data.dni;
         this.tipoUsuario = "USUARIO";
+        this.idUsuario = data._id;
+        console.log(data._id);
+        console.log(this.idUsuario);
         return true;
       } catch (e) {
         return false;
@@ -67,32 +76,65 @@ export const useCounterStore = defineStore("counter", {
         return false;
       }
       try {
-        let { data } = await medicoService.login({email, password});
+        let { data } = await medicoService.login({ email, password });
         this.nombre = data.nombre;
         this.apellido = data.apellido;
         this.email = data.email;
         this.dni = data.dni;
         this.tipoUsuario = "MEDICO";
+        this.idMedico = data._id;
+
         return true;
       } catch (e) {
         return false;
       }
     },
-    nuevoTurno(fecha, hora, especialidad) {
+    async nuevoTurno(medicoId, usuarioId, fecha, hora, especialidad) {
       const nuevoTurno = {
-        fechaTurno: fecha,
-        horaTurno: hora,
-        especialidadTurno: especialidad,
+        medico: medicoId._value,
+        paciente: usuarioId,
+        fecha: fecha,
+        hora: hora,
+        especialidad: especialidad,
       };
-      this.turnos.push(nuevoTurno);
+      try {
+        await turnoService.create(nuevoTurno);
+        return true;
+      } catch (error) {
+        console.log(error.request.response);
+        throw error;
+      }
     },
-    eliminarTurno(turno) {
-      this.turnos = this.turnos.filter((t) => {
-        //T de tini, tini,tini
-        return (
-          t.fechaTurno !== turno.fechaTurno && t.horaTurno !== turno.horaTurno
-        );
-      });
+    async eliminarTurno(turnoId) {
+      await turnoService.delete(turnoId);
     },
+    async buscarEspecialistas(especialidad) {
+      let { data } = await medicoService.buscarEspecialidad({ especialidad });
+      this.medicos = data;
+      return this.medicos;
+    },
+    async buscarTurnosPorIdPaciente(idUsuario) {
+      let { data } = await turnoService.findByPaciente(idUsuario);
+      this.turnos = data;
+      return this.turnos;
+    },
+    async buscarTurnosPorIdMedico(idMedico) {
+      let { data } = await turnoService.findByMedico(idMedico);
+      this.turnos = data;
+      return this.turnos;
+    },
+    async buscarTurnosPorIdMedicoYFecha(idMedico, fecha) {
+      let { data } = await turnoService.verDisponibilidadHoraria(
+        idMedico,
+        fecha
+      );
+      return data;
+    },
+    async buscarMedicoPorId(idMedico){
+      let { data } = await medicoService.findById(
+        idMedico
+      );
+      return data;
+    }
   },
 });

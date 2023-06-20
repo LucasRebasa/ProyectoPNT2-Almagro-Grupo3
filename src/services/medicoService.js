@@ -20,5 +20,9 @@ export default {
     },
     login(credenciales){
         return client.post(`/medico/login`, credenciales);
+    },
+    buscarEspecialidad(especialidad){
+        return client.post("/medico/especialidad", especialidad)
     }
+
 }

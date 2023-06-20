@@ -2,9 +2,15 @@
 <script setup>
 import { useCounterStore } from "../stores/counter.js"
 import { storeToRefs } from "pinia";
-import Footer from '../components/Footer.vue'
+import router from "../router/index";
 const store = useCounterStore();
 const { nombre } = storeToRefs(store)
+
+function cerrarSesion(){
+  document.getElementById('navbarNav').classList.remove('show');
+  router.push({ path: "/" });
+  store.$reset()
+}
 </script>
 
 <template>
@@ -21,13 +27,14 @@ const { nombre } = storeToRefs(store)
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Inicio <span class="sr-only"></span></a>
+          <a class="nav-link" href="#"> <span class="sr-only"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Salir</a>
+          <a class="nav-link" href="#" @click="cerrarSesion()">Salir</a>
         </li>
       </ul>
     </div>
+   
   </nav>
   
 

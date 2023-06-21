@@ -5,7 +5,6 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 const store = useCounterStore();
 import { ref, onMounted } from "vue";
-
 const {
   buscarTurnosPorIdPaciente,
   idUsuario,
@@ -14,10 +13,12 @@ const {
   idMedico,
   buscarTurnosPorIdMedico,
   buscarMedicoPorId,
+  buscarPacientePorId
 } = store;
 let turnosTomados = ref([]);
 const isLoading = ref(true);
 const datosMedico = ref({});
+const datosPaciente = ref({});
 
 async function verTurnosUsuario(idUsuario) {
   turnosTomados.value = await buscarTurnosPorIdPaciente(idUsuario);
@@ -37,13 +38,28 @@ async function borrarTurno(id,e) {
 }
 
 async function verDatosMedico(idMedico, idTurno,e) {
+ 
   e.preventDefault();
+  document.querySelectorAll(".datos").forEach(e=>e.style.display = "none")
   isLoading.value = true;
   datosMedico.value = await buscarMedicoPorId(idMedico);
   document.getElementById(idTurno).style.display = "initial";
   console.log(document.getElementById(idTurno));
   console.log(datosMedico);
   isLoading.value = false;
+  
+}
+
+async function verDatospaciente(idPaciente, idTurno,e) {
+ 
+  e.preventDefault();
+  document.querySelectorAll(".datos").forEach(e=>e.style.display = "none")
+  isLoading.value = true;
+  datosPaciente.value = await buscarPacientePorId(idPaciente);
+  console.log(datosPaciente)
+  document.getElementById(idTurno).style.display = "initial";
+  isLoading.value = false;
+  
 }
 
 onMounted(() => {
@@ -83,12 +99,26 @@ onMounted(() => {
           v-show="tipoUsuario === 'USUARIO'"
           >Ver datos medico</a
         >
-        <div class="card-body" :id="turno._id" style="display: none">
+
+        <a
+          href="#"
+          type="button"
+          class="btn btn-secondary"
+          @click="(e) => verDatospaciente(turno.paciente, turno._id, e)"
+          v-show="tipoUsuario === 'MEDICO'"
+          >Ver datos paciente</a
+        >
+        <div class="card-body datos" :id="turno._id" style="display: none">
           <p></p>
-          <p class="card-title">Dr.{{ datosMedico.apellido }}, {{ datosMedico.nombre }}</p>
-          <p class="card-text">Matricula N°: {{ datosMedico.matricula }}</p>
-          <p class="card-text">Email  : {{ datosMedico.email }}</p>
+          <p class="card-title" v-if="tipoUsuario==='USUARIO'">Dr.{{ datosMedico.apellido }}, {{ datosMedico.nombre }}</p>
+          <p class="card-text" v-if="tipoUsuario==='USUARIO'">Matricula N°: {{ datosMedico.matricula }}</p>
+          <p class="card-text" v-if="tipoUsuario==='USUARIO'">Email  : {{ datosMedico.email }}</p>
+
+          <p class="card-title" v-if="tipoUsuario==='MEDICO'">Paciente : {{ datosPaciente.apellido }}, {{ datosPaciente.nombre }}</p>
+          <p class="card-text" v-if="tipoUsuario==='MEDICO'">DNI N° : {{ datosPaciente.dni }}</p>
+          <p class="card-text" v-if="tipoUsuario==='MEDICO'">Email : {{ datosPaciente.mail }}</p>
         </div>
+
       </div>
       <div class="card-footer text-muted">
         <p>Todos los derechos reservados © 2023 <b>CuidApp </b></p>

@@ -135,6 +135,12 @@ export const useCounterStore = defineStore("counter", {
         idMedico
       );
       return data;
+    },
+    async buscarPacientePorId(idPaciente){
+      let { data } = await usuariosService.findById(
+        idPaciente
+      );
+      return data;
     }
   },
 });

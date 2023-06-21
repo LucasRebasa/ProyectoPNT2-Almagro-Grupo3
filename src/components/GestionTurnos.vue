@@ -38,6 +38,7 @@ async function borrarTurno(id,e) {
 
 async function verDatosMedico(idMedico, idTurno,e) {
   e.preventDefault();
+  document.querySelector(".datos-medico").style.display = "none";
   isLoading.value = true;
   datosMedico.value = await buscarMedicoPorId(idMedico);
   document.getElementById(idTurno).style.display = "initial";
@@ -83,7 +84,7 @@ onMounted(() => {
           v-show="tipoUsuario === 'USUARIO'"
           >Ver datos medico</a
         >
-        <div class="card-body" :id="turno._id" style="display: none">
+        <div class="card-body datos-medico" :id="turno._id" style="display: none">
           <p></p>
           <p class="card-title">Dr.{{ datosMedico.apellido }}, {{ datosMedico.nombre }}</p>
           <p class="card-text">Matricula N°: {{ datosMedico.matricula }}</p>

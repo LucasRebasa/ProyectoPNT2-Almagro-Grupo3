@@ -110,6 +110,9 @@ h1 {
   margin-top: 45px;
   text-align: center;
 }
+a{
+  margin: 5px;
+}
 
 h2 {
   text-align: center;

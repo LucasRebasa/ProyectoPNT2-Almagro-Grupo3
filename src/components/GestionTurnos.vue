@@ -74,6 +74,20 @@ async function editarTurno(medico, paciente, id, fecha, hora,e){
   isLoading.value = false;
 }
 
+
+function deshabilitarBoton(fecha){
+  let date = new Date(fecha);
+  date.setHours(0,0,0)
+  console.log(date)
+  let fechaActual = new Date();
+  fechaActual.setHours(0,0,0)
+  console.log(new Date(fecha).getTime() - fechaActual.getTime() >=
+      172800000)
+  return new Date(fecha).getTime() - fechaActual.getTime() <
+      172800000
+}
+
+
 onMounted(() => {
   if (tipoUsuario === "MEDICO") {
     verTurnosMedico(idMedico);
@@ -100,7 +114,7 @@ onMounted(() => {
         <p class="card-text"><b>Fecha :</b> {{ turno.fecha }}</p>
         <p class="card-text"><b>Hora :</b> {{ turno.hora }}hs</p>
 
-        <a href="#" class="btn btn-primary" @click="(e) => borrarTurno(turno._id,e)"
+        <a href="#" class="btn btn-primary" @click="(e) => borrarTurno(turno._id,e)" v-show="!deshabilitarBoton(turno.fecha)"
           >Eliminar turno</a
         >
         <a
@@ -121,13 +135,14 @@ onMounted(() => {
           >Ver datos paciente</a
         >
 
-        <a
+        <button
           href="#"
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-secondary editar"
           @click="(e) => editarTurno(turno.medico, turno.paciente, turno._id, turno.fecha, turno.hora,e)"
           v-show="tipoUsuario === 'USUARIO'"
-          >Reprogramar</a
+          :disabled="deshabilitarBoton(turno.fecha)"
+          >Reprogramar</button
         >
         <div class="card-body datos" :id="turno._id" style="display: none">
           <p></p>
@@ -162,7 +177,7 @@ h1 {
   text-align: center;
 }
 a{
-  margin: 5px;
+  margin: 11px;
 }
 
 h2 {
@@ -179,11 +194,10 @@ h2 {
 }
 
 button {
-  margin: auto;
   display: flex;
   flex-direction: column;
   margin: 15px;
-  padding: 20px;
+  padding: 18px;
 }
 
 a {
@@ -202,5 +216,13 @@ li {
   display: flex;
   justify-content: center;
   margin-top: 5%;
+}
+
+.editar{
+  display: inline-block;
+  height: 10px;
+  vertical-align: center;
+  line-height: 0px;
+  box-sizing: border-box;
 }
 </style>

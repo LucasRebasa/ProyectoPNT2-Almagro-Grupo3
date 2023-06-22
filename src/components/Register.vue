@@ -32,7 +32,7 @@ async function validarRegister(
         await registerUsuario(nombre, apellido, dni, email, password);
         router.push({ path: "/" });
       } catch (e) {
-        window.alert(e);
+        window.alert("Ya existe un usuario con ese mail");
       }finally{
         isLoading.value=false;
       }
@@ -49,7 +49,7 @@ async function validarRegister(
         );
         router.push({ path: "/" });
       } catch (e) {
-        window.alert(e);
+        window.alert("Ya existe un medico con ese mail");
       }finally{
         isLoading.value=false;
       }

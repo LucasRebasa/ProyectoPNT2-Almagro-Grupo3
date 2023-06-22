@@ -5,6 +5,7 @@ import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/css/index.css";
 const store = useCounterStore();
 import { ref, onMounted } from "vue";
+import router from "../router";
 const {
   buscarTurnosPorIdPaciente,
   idUsuario,
@@ -13,7 +14,9 @@ const {
   idMedico,
   buscarTurnosPorIdMedico,
   buscarMedicoPorId,
-  buscarPacientePorId
+  buscarPacientePorId,
+  turno,
+  guardarTurno
 } = store;
 let turnosTomados = ref([]);
 const isLoading = ref(true);
@@ -62,6 +65,13 @@ async function verDatospaciente(idPaciente, idTurno,e) {
   
 }
 
+async function editarTurno(medico, paciente, id, fecha, hora){
+  let {nombre, apellido} = await buscarPacientePorId(paciente);
+
+  guardarTurno(medico, paciente, id, fecha, hora, `${nombre} ${apellido}`);
+  router.push({name:"editar"});
+}
+
 onMounted(() => {
   if (tipoUsuario === "MEDICO") {
     verTurnosMedico(idMedico);
@@ -107,6 +117,15 @@ onMounted(() => {
           @click="(e) => verDatospaciente(turno.paciente, turno._id, e)"
           v-show="tipoUsuario === 'MEDICO'"
           >Ver datos paciente</a
+        >
+
+        <a
+          href="#"
+          type="button"
+          class="btn btn-secondary"
+          @click="(e) => editarTurno(turno.medico, turno.paciente, turno._id, turno.fecha, turno.hora)"
+          v-show="tipoUsuario === 'USUARIO'"
+          >Reprogramar</a
         >
         <div class="card-body datos" :id="turno._id" style="display: none">
           <p></p>

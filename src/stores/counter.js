@@ -18,6 +18,7 @@ export const useCounterStore = defineStore("counter", {
     turnos: [],
     medicos: [],
     especialidad: "",
+    turno:{},
   }),
   persist: true,
   actions: {
@@ -141,6 +142,23 @@ export const useCounterStore = defineStore("counter", {
         idPaciente
       );
       return data;
+    },
+    guardarTurno(medico, paciente, id, fecha, hora, nombrePaciente){
+      this.turno = {
+        medico,
+        paciente,
+        id,
+        fecha,
+        hora,
+        nombrePaciente
+      }
+    },
+    async actualizarTurno(id, turno){
+      try{
+        await turnoService.update(id, turno);
+      } catch(e){
+        throw e;
+      }
     }
   },
 });

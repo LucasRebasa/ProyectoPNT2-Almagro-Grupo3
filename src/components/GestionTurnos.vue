@@ -65,11 +65,13 @@ async function verDatospaciente(idPaciente, idTurno,e) {
   
 }
 
-async function editarTurno(medico, paciente, id, fecha, hora){
+async function editarTurno(medico, paciente, id, fecha, hora,e){
+  e.preventDefault()
+  isLoading.value = true;
   let {nombre, apellido} = await buscarPacientePorId(paciente);
-
   guardarTurno(medico, paciente, id, fecha, hora, `${nombre} ${apellido}`);
   router.push({name:"editar"});
+  isLoading.value = false;
 }
 
 onMounted(() => {
@@ -123,7 +125,7 @@ onMounted(() => {
           href="#"
           type="button"
           class="btn btn-secondary"
-          @click="(e) => editarTurno(turno.medico, turno.paciente, turno._id, turno.fecha, turno.hora)"
+          @click="(e) => editarTurno(turno.medico, turno.paciente, turno._id, turno.fecha, turno.hora,e)"
           v-show="tipoUsuario === 'USUARIO'"
           >Reprogramar</a
         >

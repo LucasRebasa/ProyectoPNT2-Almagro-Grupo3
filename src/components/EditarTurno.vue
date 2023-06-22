@@ -4,7 +4,8 @@ import flatpickr from "flatpickr";
 import { useCounterStore } from "../stores/counter.js";
 import { ref } from "vue";
 import router from "../router";
-
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
 const store = useCounterStore();
 const { turno, buscarTurnosPorIdMedicoYFecha, actualizarTurno } = store;
 
@@ -24,26 +25,26 @@ const fecha = ref("");
 const horario = ref("");
 const disableHorario = ref(true);
 const isLoading = ref(false);
+
 async function verHorarios() {
+  isLoading.value = true;
   disableHorario.value = true;
-  setTimeout(async () => {
-    isLoading.value = true;
-    let turnosNoDisponibles = await buscarTurnosPorIdMedicoYFecha(
+  
+      let turnosNoDisponibles = await buscarTurnosPorIdMedicoYFecha(
       turno.medico,
       turno.fecha
-    );
+    )
     turnosNoDisponibles = turnosNoDisponibles.map((e) => e.hora);
-
     horariosDisponiblesRef.value = horariosDisponibles.filter(
       (turno) => !turnosNoDisponibles.includes(turno)
     );
     isLoading.value = false;
     disableHorario.value = false;
-  }, 1000);
+  
 }
 
 async function confirmar() {
-  //loading en true
+  isLoading.value=true
   try {
     await actualizarTurno(turno.id, { fechaNueva: fecha.value, horaNueva: horario.value });
     router.push({path:"/GestionTurnos"})
@@ -51,7 +52,7 @@ async function confirmar() {
     console.log(e);
     window.alert("Ocurrio un error");
   } finally {
-    //loading en false
+    isLoading.value = false;
   }
 }
 
@@ -78,10 +79,17 @@ onMounted(() => {
 </script>
 
 <template>
+    <div>
+    <loading
+      v-model:active="isLoading"
+      :can-cancel="false"
+      :is-full-page="fullPage"
+    />
+  </div>
   <div class="card margin">
     <div class="card-body">
       <h4>Ingrese los datos para su nuevo turno</h4>
-      <p>Medico: Dr. {{ turno.nombrePaciente }}</p>
+      <p></p>
       <div class="input-group">
         <span class="input-group-text">Selecciona una fecha</span>
         <input
@@ -110,7 +118,7 @@ onMounted(() => {
         </select>
       </div>
       <br />
-      <button class="btn btn-success" @click="confirmar()">Confirmar</button>
+      <a class="btn btn-success" @click="confirmar()">Confirmar</a>
     </div>
     <RouterLink to="/GestionTurnos"
       ><button class="btn btn-outline-secondary" type="button">Volver</button>
@@ -123,4 +131,11 @@ onMounted(() => {
   margin: 20px;
   text-align: center;
 }
+.input-group{
+  margin-top: 15px;
+}
+a{
+  margin-bottom: 15px;
+}
+
 </style>

@@ -43,7 +43,6 @@ const store = useCounterStore();
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url();
- 
 }
 
 .form__container{
@@ -105,4 +104,5 @@ input, textarea{
   background: #3d3d51;
   font-weight: bold;
 }
+
 </style>

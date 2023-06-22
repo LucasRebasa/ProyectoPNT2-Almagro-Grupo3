@@ -1,14 +1,13 @@
 
 <script setup>
 import { useCounterStore } from "../stores/counter.js"
-import { storeToRefs } from "pinia";
 import router from "../router/index";
 const store = useCounterStore();
-const { nombre } = storeToRefs(store)
+const { nombre, cerrarSesion } = store;
 
-function cerrarSesion(){
-  document.getElementById('navbarNav').classList.remove('show');
+function logout(){
   router.push({ path: "/" });
+  cerrarSesion();
   store.$reset()
 }
 </script>
@@ -21,19 +20,9 @@ function cerrarSesion(){
    </div>
   
   
-    <button v-show="nombre!==''" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <button v-show="nombre!==''" @click="logout()" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    Cerrar Sesion
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"> <span class="sr-only"></span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" @click="cerrarSesion()">Salir</a>
-        </li>
-      </ul>
-    </div>
    
   </nav>
   

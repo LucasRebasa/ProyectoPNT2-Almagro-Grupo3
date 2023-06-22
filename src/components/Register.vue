@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import { useCounterStore } from "../stores/counter";
 import router from "../router/index";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 
 const store = useCounterStore();
 const nombre = ref("");
@@ -12,6 +14,7 @@ const email = ref("");
 const tipo = ref("");
 const matricula = ref("");
 const especialidad = ref("");
+const isLoading = ref(false);
 const { registerUsuario, registerMedico } = store;
 
 async function validarRegister(
@@ -22,6 +25,7 @@ async function validarRegister(
   password,
   tipo
 ) {
+  isLoading.value=true;
   if (nombre && apellido && dni && password) {
     if (tipo === "Usuario") {
       try {
@@ -29,6 +33,8 @@ async function validarRegister(
         router.push({ path: "/" });
       } catch (e) {
         window.alert(e);
+      }finally{
+        isLoading.value=false;
       }
     } else {
       try {
@@ -44,13 +50,22 @@ async function validarRegister(
         router.push({ path: "/" });
       } catch (e) {
         window.alert(e);
+      }finally{
+        isLoading.value=false;
       }
     }
   }
+  isLoading.value=false;
 }
 </script>
 
 <template>
+  <div>
+    <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page="fullPage"/>
+  </div>
+
   <form class="container" v-on:submit.prevent>
     <div class="input-group">
       <span class="input-group-text">Nombre</span>
@@ -102,11 +117,6 @@ async function validarRegister(
         required
       />
       <span class="input-group-text">Contraseña</span>
-    </div>
-
-    <div class="input-group">
-      <input type="password" class="form-control" required />
-      <span class="input-group-text">Confirmar contraseña</span>
     </div>
 
     <div class="input-group">

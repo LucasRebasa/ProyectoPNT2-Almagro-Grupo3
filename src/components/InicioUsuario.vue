@@ -2,8 +2,15 @@
 import { RouterLink } from 'vue-router';
 import { useCounterStore } from "../stores/counter.js"
 import { storeToRefs } from "pinia";
+import router from '../router';
 const store = useCounterStore();
-const { nombre } = storeToRefs(store)
+const { nombre } = storeToRefs(store);
+const {cerrarSesion} = store;
+
+function logout(){
+  cerrarSesion()
+  router.push({path:"/"})
+}
 </script>
 
 <template>
@@ -16,10 +23,9 @@ const { nombre } = storeToRefs(store)
       <RouterLink to="/Contactese"><button class="btn btn-outline-secondary" type="button">Contáctese <img src="https://cdn1.iconfinder.com/data/icons/contact-us-flat-1/58/028_-_Contact_Info-512.png" id="imgButton" alt=""></button>
       </RouterLink>
     </div>
-    <RouterLink to="/"
-    ><button class="btn btn-outline-secondary" id="btnSalir" type="button">
+    <button class="btn btn-outline-secondary" id="btnSalir" type="button"  @click="logout()">
       Salir
-    </button></RouterLink>
+    </button>
   </div>
 </template>
 

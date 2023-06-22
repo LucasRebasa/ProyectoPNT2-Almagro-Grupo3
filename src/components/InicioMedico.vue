@@ -3,7 +3,8 @@ import { RouterLink } from 'vue-router';
 import { useCounterStore } from "../stores/counter.js"
 import { storeToRefs } from "pinia";
 const store = useCounterStore();
-const { nombre } = storeToRefs(store)
+const { nombre } = storeToRefs(store);
+const {cerrarSesion} = store;
 </script>
 
 <template>
@@ -16,7 +17,7 @@ const { nombre } = storeToRefs(store)
       </RouterLink>
     </div>
     <RouterLink to="/"
-    ><button class="btn btn-outline-secondary" id="btnSalir" type="button">
+    @click="cerrarSesion()"><button class="btn btn-outline-secondary" id="btnSalir" type="button">
       Salir
     </button></RouterLink>
   </div>

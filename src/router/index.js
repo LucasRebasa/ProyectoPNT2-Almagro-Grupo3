@@ -104,11 +104,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useCounterStore();
 
-  const tipoUsuario = store.tipoUsuario;
-  if(to.name==="InicioUsuario" && tipoUsuario === "MEDICO"){
+  const {tipoUsuario, nombre} = store;
+  if(to.name==="InicioUsuario" && tipoUsuario === "MEDICO" ){
     next({name:"InicioMedico"});
   }else if(to.name==="InicioMedico" && tipoUsuario === "USUARIO"){
     next({name:"InicioUsuario"});
+  }else if(to.name==="GestionTurnos" && nombre===""){
+    next({name:"home"});
   }else{
     next();
   }

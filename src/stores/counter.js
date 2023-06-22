@@ -8,7 +8,6 @@ export const useCounterStore = defineStore("counter", {
     idUsuario: "",
     idMedico: "",
     nombre: "",
-    nombreMedico:"",
     apellido: "",
     email: "",
     password: "",
@@ -18,7 +17,7 @@ export const useCounterStore = defineStore("counter", {
     turnos: [],
     medicos: [],
     especialidad: "",
-    turno:{},
+    turno:{}
   }),
   persist: true,
   actions: {
@@ -28,7 +27,7 @@ export const useCounterStore = defineStore("counter", {
         apellido,
         dni,
         email,
-        password,
+        password
       };
       try {
         await usuariosService.create(obj);
@@ -65,8 +64,6 @@ export const useCounterStore = defineStore("counter", {
         this.dni = data.dni;
         this.tipoUsuario = "USUARIO";
         this.idUsuario = data._id;
-        console.log(data._id);
-        console.log(this.idUsuario);
         return true;
       } catch (e) {
         return false;
@@ -102,7 +99,6 @@ export const useCounterStore = defineStore("counter", {
         await turnoService.create(nuevoTurno);
         return true;
       } catch (error) {
-        console.log(error.request.response);
         throw error;
       }
     },
@@ -159,6 +155,19 @@ export const useCounterStore = defineStore("counter", {
       } catch(e){
         throw e;
       }
+    },
+    cerrarSesion(){
+      this.nombre="";
+      this.apellido="";
+      this.dni="";
+      this.email="";
+      this.password="";
+      this.especialidad="";
+      this.medicos=[];
+      this.turno={};
+      this.turnos=[];
+      this.idMedico="";
+      this.idUsuario="";
     }
   },
 });

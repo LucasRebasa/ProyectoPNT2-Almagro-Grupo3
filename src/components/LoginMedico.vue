@@ -27,6 +27,7 @@ async function validarLogin(email, password){
       window.alert("Usuario no registrado")
     }
   }
+  isLoading.value = false;
 }
 </script>
 

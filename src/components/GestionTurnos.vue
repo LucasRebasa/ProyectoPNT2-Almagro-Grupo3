@@ -22,14 +22,25 @@ let turnosTomados = ref([]);
 const isLoading = ref(true);
 const datosMedico = ref({});
 const datosPaciente = ref({});
-
+const sinTurnos = ref(false);
 async function verTurnosUsuario(idUsuario) {
-  turnosTomados.value = await buscarTurnosPorIdPaciente(idUsuario);
-  isLoading.value = false;
+  try{
+    turnosTomados.value = await buscarTurnosPorIdPaciente(idUsuario);
+  }catch{
+    sinTurnos.value = true;
+  }finally{
+    isLoading.value = false;
+  }
 }
 async function verTurnosMedico(idMedico) {
-  turnosTomados.value = await buscarTurnosPorIdMedico(idMedico);
-  isLoading.value = false;
+  try {
+    turnosTomados.value = await buscarTurnosPorIdMedico(idMedico);
+  } catch (error) {
+    sinTurnos.value = true;
+  }
+  finally{
+    isLoading.value = false;
+  }
 }
 
 async function borrarTurno(id,e) {
@@ -107,6 +118,11 @@ onMounted(() => {
   </div>
   <div>
     <h2>Listado de Turnos</h2>
+    <div class="card text-center" v-if="sinTurnos">
+     <div class="card-body">
+      <p>No hay turnos asignados</p>
+     </div>
+    </div>
     <div class="card text-center" v-for="turno in turnosTomados">
       <div class="card-header">Turno</div>
       <div class="card-body">
@@ -152,7 +168,7 @@ onMounted(() => {
 
           <p class="card-title" v-if="tipoUsuario==='MEDICO'">Paciente : {{ datosPaciente.apellido }}, {{ datosPaciente.nombre }}</p>
           <p class="card-text" v-if="tipoUsuario==='MEDICO'">DNI N° : {{ datosPaciente.dni }}</p>
-          <p class="card-text" v-if="tipoUsuario==='MEDICO'">Email : {{ datosPaciente.mail }}</p>
+          <p class="card-text" v-if="tipoUsuario==='MEDICO'">Email : {{ datosPaciente.email }}</p>
         </div>
 
       </div>

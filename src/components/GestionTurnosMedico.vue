@@ -15,10 +15,35 @@ let fechas = [];
 const nroFechaSeleccionada = ref(0);
 const datosPaciente = ref({});
 
+
+
 async function verTurnosMedico(idMedico) {
   try {
     let turnos = await buscarTurnosPorIdMedico(idMedico);
     const hashMapTurnos = new Map();
+    // "12/10/2020" --> [turno1, turno2, turno3]
+    turnos.sort((turno1, turno2) => {
+    // Ordenar primero por fecha y luego por hora
+    const fecha1 = new Date(turno1.fecha);
+    const fecha2 = new Date(turno2.fecha);
+
+    if (fecha1 < fecha2) {
+      return -1;
+    } else if (fecha1 > fecha2) {
+      return 1;
+    } else {
+      //En caso de que ambas fechas sean iguales se comparan las horas
+      const hora1 = turno1.hora;
+      const hora2 = turno2.hora;
+      if (hora1 < hora2) {
+        return -1;
+      } else if (hora1 > hora2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  });
     turnos.forEach((turno) => {
       const fecha = turno.fecha;
 
@@ -31,11 +56,11 @@ async function verTurnosMedico(idMedico) {
       }
       return hashMapTurnos;
     });
-    hashMapTurnos.forEach((value, key, map) => {
-      console.log(map.get(key));
-    });
+
     turnosMap.value = hashMapTurnos;
+    //Obtiene la primer fecha del Map
     fechaSeleccionada.value = hashMapTurnos.keys().next().value;
+    //Se crea una lista con todas las fechas (las claves el Map) y se ordenan
     fechas = Array.from(hashMapTurnos.keys()).sort(
       (a, b) => new Date(a) - new Date(b)
     );
@@ -61,6 +86,7 @@ async function verDatospaciente(idPaciente, idTurno, e) {
 }
 
 function siguienteFecha() {
+  //Si esta en el ultimo elemento de la lista, vuelve al primero
   if (nroFechaSeleccionada.value + 1 >= fechas.length) {
     nroFechaSeleccionada.value = 0;
   } else {
@@ -70,6 +96,7 @@ function siguienteFecha() {
 }
 
 function anteriorFecha() {
+  //Si esta en el primer elemento de la lista pasa al ultimo
   if (nroFechaSeleccionada.value - 1 < 0) {
     nroFechaSeleccionada.value = fechas.length - 1;
   } else {
